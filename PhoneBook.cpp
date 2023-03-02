@@ -25,7 +25,7 @@ node* Book::addPerson(node* root, Person per) {
     }
 
     // Recursively call itself based on the value compared to root it is at
-    if (per.getFirstName() < root->person.getFirstName()) {
+    if (per.getLastName() < root->person.getLastName()) {
         root->left = addPerson(root->left, per);
     }
     else {
@@ -45,9 +45,7 @@ node* Book::Add(Person per)
         return root;
     }
 
-    addPerson(root, per); // Recursively add value
-
-    return root;
+    return addPerson(root, per); // Recursively add value
 }
 
 // TODO DELETE PERSON
@@ -70,10 +68,10 @@ node* Book::Find(node* root, string str)
     // Moves to the right in the search tree if search item is greater than the root value
     if (root->person.getLastName() < str)
     {
-        return Find(root->left, str);
+        return Find(root->right, str);
     }
 
-    return Find(root->right, str); // Recursively calls itself to search to the left
+    return Find(root->left, str); // Recursively calls itself to search to the left
 }
 
 // Searches through the binary search tree for the value specified
