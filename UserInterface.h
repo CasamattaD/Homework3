@@ -111,8 +111,8 @@ private:
         cin >> firstName;
         cout << "Enter last name: ";
         cin >> lastName;
-        // phoneBook.deletePerson(lastName, firstName);
-        // cout << person.getFirstName() + " " + person.getLastName() + " has been deleted";
+        phoneBook.deleteNode(lastName);
+        cout << firstName + " " + lastName + " has been deleted";
     }
 
     void findPerson() {
@@ -127,15 +127,16 @@ private:
     }
 
     void changePhoneNumber() {
-        string firstName, lastName;
+        string firstName, lastName, phoneNumber;
         cout << "Enter first name: ";
         cin >> firstName;
         cout << "Enter last name: ";
         cin >> lastName;
-        // Person found = phoneBook.search(lastName);
         cout << "Enter new phone number: ";
-        // Need to add method to change phone number
+        cin >> phoneNumber;
+        phoneBook.changeNumber(lastName, phoneNumber);
     }
+
     void displayPhoneBook() {
         phoneBook.displayPhoneBook();
     }

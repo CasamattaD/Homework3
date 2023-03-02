@@ -20,16 +20,19 @@ public:
     node* addPerson(node* root, Person per);
     node* Add(Person per); // Find place to insert node
 
-    node* Delete(string str); // Delete Person
+    void deletePerson(string lastName);
+    node* Delete(node* root, Person person); // Delete Person
 
     node* Find(node* root, string str); // Return Node *, if no value, return NULL *
     void findPerson(string str);
-    string getValue(node* root);
+    // string getValue(node* root);
 
-    // node* changePerson(node* root, string str);
+    void changeNumber(string lastName, string number);
 
     vector<node*> getOrder(node* root, vector<node*> book);
     void displayPhoneBook(); // Organize the contents of the binary search tree in order in a vector
+
+    node* deleteNode(string lastName);
 
 private:
     vector<node*> book;

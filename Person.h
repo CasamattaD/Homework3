@@ -1,7 +1,6 @@
 #pragma once
 #include <string>
 #include <memory>
-#pragma once
 
 using namespace std;
 
@@ -13,6 +12,7 @@ public:
     string getFirstName() const { return m_firstName; }
     string getLastName() const { return m_lastName; }
     string getPhoneName() const { return m_phoneNumber; }
+    void changePhoneNumber(string number);
 
 private:
     string m_firstName;
