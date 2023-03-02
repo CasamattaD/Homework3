@@ -136,9 +136,9 @@ private:
         cout << "Enter new phone number: ";
         // Need to add method to change phone number
     }
-    void displayPhoneBook(
-        // get root of bst and inorder traversal print
-    ) {}
+    void displayPhoneBook() {
+        phoneBook.displayPhoneBook();
+    }
 
 };
 

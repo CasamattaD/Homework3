@@ -104,7 +104,7 @@ vector<node*> Book::getOrder(node* root, vector<node*> book) {
     // recursively find order using self function
     getOrder(root->left, book);
     book.push_back(root);
-    cout << root->person.getFirstName() << root->person.getLastName() << root->person.getPhoneName() << endl;
+    cout << root->person.getFirstName() + " " + root->person.getLastName() + " - " + root->person.getPhoneName() << endl;
     getOrder(root->right, book);
 
     return book;
