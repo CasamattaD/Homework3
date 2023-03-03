@@ -1,4 +1,6 @@
-dominic casamatta 123
-bob bark 234
-caleb lang 234
-random guy 456
+     FirstName	      LastName	PhoneNumber
+           Bob	          Bark	 5135551789
+       Dominic	     Casamatta	 4405550056
+        Andrew	          Fork	 3305556789
+          Drew	         Kelly	 5135556734
+         Caleb	       Langhal	 5135553321

@@ -1,4 +1,6 @@
 #include <iostream>
+#include <fstream>
+#include <iomanip>
 #include <vector>
 #include <string>
 #include "PhoneBook.h"
@@ -16,7 +18,7 @@ Book::~Book()
 
 }
 
-// Used as a crutch for Add function.
+// Recursively used for Add
 node* Book::addPerson(node* root, Person per) {
     if (root == NULL) {
         root = new node(per);
@@ -36,7 +38,7 @@ node* Book::addPerson(node* root, Person per) {
     return root;
 }
 
-// Insert a string passed through into the Binary Search Book
+// Insert a Person passed into the Binary Search Phone Book
 node* Book::Add(Person per)
 {
     if (root == NULL) {
@@ -49,179 +51,7 @@ node* Book::Add(Person per)
     return addPerson(root, per); // Recursively add value
 }
 
-/* Given a non-empty binary search tree,
-return the node with minimum key value
-found in that tree. Note that the entire
-tree does not need to be searched. */
-node* minValueNode(node* Node)
-{
-    node* current = Node;
-
-    /* loop down to find the leftmost leaf */
-    while (current->left != NULL)
-        current = current->left;
-
-    return current;
-}
-
-
-node* Book::Delete(node* root, Person person)
-{
-    if (root == nullptr) return root;
-
-    if (person.getLastName() < root->person.getLastName())
-        Delete(root->left, person);
-
-    else if (person.getLastName() > root->person.getLastName())
-        Delete(root->right, person);
-
-    else
-    {
-        // node with only one child or no child
-        if (root->left == nullptr)
-        {
-            node* temp = root->right;
-            delete root;
-            return temp;
-        }
-        else if (root->right == nullptr)
-        {
-            node* temp = root->left;
-            delete root;
-            return temp;
-        }
-
-        node* temp = minValueNode(root->right);
-
-        root->person = temp->person;
-
-        // Delete the inorder successor
-        Delete(root->right, temp->person);
-    }
-    return root;
-}
-
-void Book::deletePerson(string p) {
-    /*
-    node* per = Find(root, lastName);
-    Person person = per->person;
-    Delete(root, person);
-    */
-    //Locate the element
-    bool found = false;
-
-    node* curr;
-    node* parent;
-    curr = root;
-    parent = curr;
-    while (curr != NULL)
-    {
-        if (curr->person.getLastName() == p)
-        {
-            found = true;
-            break;
-        }
-        else
-        {
-            parent = curr;
-            if (p > curr->person.getLastName()) curr = curr->right;
-            else curr = curr->left;
-        }
-    }
-    if (!found)
-    {
-        cout << " Data not found! " << endl;
-        return;
-    }
-    // 3 cases :
-// 1. We're removing a leaf node
-// 2. We're removing a node with a single child
-// 3. we're removing a node with 2 children
-// Node with single child
-    if ((curr->left == NULL && curr->right != NULL) || (curr->left != NULL
-        && curr->right == NULL))
-    {
-        if (curr->left == NULL && curr->right != NULL)
-        {
-            if (parent->left == curr)
-            {
-                parent->left = curr->right;
-                delete curr;
-            }
-            else
-            {
-                parent->right = curr->right;
-                delete curr;
-            }
-        }
-        else // left child present, no right child
-        {
-            if (parent->left == curr)
-            {
-                parent->left = curr->left;
-                delete curr;
-            }
-            else
-            {
-                parent->right = curr->left;
-                delete curr;
-            }
-        }
-        return;
-    }
-    //We're looking at a leaf node
-    if (curr->left == NULL && curr->right == NULL)
-    {
-        if (parent->left == curr) parent->left = NULL;
-        else parent->right = NULL;
-        delete curr;
-        return;
-    }
-    //Node with 2 children
-    // replace node with smallest value in right subtree
-    if (curr->left != NULL && curr->right != NULL)
-    {
-        node* chkr;
-        chkr = curr->right;
-        if ((chkr->left == NULL) && (chkr->right == NULL))
-        {
-            curr = chkr;
-            delete chkr;
-            curr->right = NULL;
-        }
-        else // right child has children
-        {
-            //if the node's right child has a left child
-            // Move all the way down left to locate smallest element
-            if ((curr->right)->left != NULL)
-            {
-                node* lcurr;
-                node* lcurrp;
-                lcurrp = curr->right;
-                lcurr = (curr->right)->left;
-                while (lcurr->left != NULL)
-                {
-                    lcurrp = lcurr;
-                    lcurr = lcurr->left;
-                }
-                curr->person = lcurr->person;
-                delete lcurr;
-                lcurrp->left = NULL;
-            }
-            else
-            {
-                node* tmp;
-                tmp = curr->right;
-                curr->person = tmp->person;
-                curr->right = tmp->right;
-                delete tmp;
-            }
-        }
-        return;
-    }
-}
-
-// Recursively searches the search tree for a specific element
+// Recursively searches the search tree for a specific Person
 node* Book::Find(node* root, string str)
 {
     if (root == nullptr)
@@ -245,7 +75,7 @@ node* Book::Find(node* root, string str)
     return Find(root->left, str); // Recursively calls itself to search to the left
 }
 
-// Searches through the binary search tree for the value specified
+// Searches through the binary search tree for Person
 void Book::findPerson(string str)
 {
     if (root == NULL)
@@ -260,12 +90,13 @@ void Book::findPerson(string str)
     }
     if (root->person.getLastName() < str)
     {
-        Find(root, str); // Recursively calls itself to search to the right of the current node 
+        Find(root, str); // Recursive function to search to the right of the current node 
     }
-    Find(root, str); // Recursively calls itself to search to the left of the current node
+    Find(root, str); // Recursive function to search to the left of the current node
 
 }
 
+// Change persons phone number
 void Book::changeNumber(string lastName, string number)
 {
     node* per = Find(root, lastName);
@@ -303,6 +134,7 @@ void Book::displayPhoneBook() {
 
 }
 
+// Deletes the deepest node in the BST
 void deleteDeepestNode(node* root, node* deleting_node) {
     queue<node*> nodes;
     nodes.push(root);
@@ -338,6 +170,7 @@ void deleteDeepestNode(node* root, node* deleting_node) {
     }
 }
 
+// Deletes a node from the BST
 node* Book::deleteNode(string lastName) {
     node* per = Find(root, lastName);
     if (root == NULL) {
@@ -351,7 +184,7 @@ node* Book::deleteNode(string lastName) {
             return root;
         }
     }
-    queue<node*> nodes;
+    queue<node*> nodes; // Put nodes into a queue for easy use
     nodes.push(root);
     node* temp = nodes.front();
     node* key_node = NULL;
@@ -374,4 +207,25 @@ node* Book::deleteNode(string lastName) {
         key_node->person = deepest_node_data;
     }
     return root;
+}
+
+// Save the People from BST into the file
+void Book::saveBST(ofstream& outFile, node* root) {
+    if (root == NULL)
+    {
+        return;
+    }
+
+    // recursively find order using self function
+    saveBST(outFile, root->left);
+    outFile << setw(15) << root->person.getFirstName() + "\t" << setw(15) << root->person.getLastName() + "\t" << setw(12) << root->person.getPhoneName() + "\n";
+    saveBST(outFile, root->right);
+    
+    return;
+}
+
+// Save's the file itself
+void Book::saveFile(ofstream& outFile) {
+    outFile << setw(15) << "FirstName\t" << setw(15) << "LastName\t" << setw(12) << "PhoneNumber\n";
+    saveBST(outFile, root);
 }

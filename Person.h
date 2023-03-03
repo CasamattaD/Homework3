@@ -4,6 +4,8 @@
 
 using namespace std;
 
+
+// Person class representing Person firstName, lastName, and phoneNumber
 class Person {
 public:
     Person(string firstName, string lastName, string phoneNumber) :

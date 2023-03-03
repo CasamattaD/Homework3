@@ -7,12 +7,6 @@
 
 using namespace std;
 
-// Function to convert a string to lowercase
-string toLowercase(string str) {
-    transform(str.begin(), str.end(), str.begin(), ::tolower);
-    return str;
-}
-
 // Class for user interface
 class UserInterface {
 public:
@@ -65,6 +59,7 @@ private:
         ifstream inFile("phonebook.txt");
         if (inFile.is_open()) {
             string firstName, lastName, phoneNumber;
+            inFile.ignore(LLONG_MAX, '\n');
             while (inFile >> firstName >> lastName >> phoneNumber) {
                 Person person(firstName, lastName, phoneNumber);
                 phoneBook.Add(person);
@@ -81,7 +76,7 @@ private:
     void saveToFile() {
         ofstream outFile("phonebook.txt");
         if (outFile.is_open()) {
-            phoneBook.displayPhoneBook(); // insert outFile
+            phoneBook.saveFile(outFile); // insert outFile
             outFile.close();
             cout << "Phone book data saved to file." << endl;
         }
@@ -115,6 +110,7 @@ private:
         cout << firstName + " " + lastName + " has been deleted";
     }
 
+    // Function to find person from the phone book
     void findPerson() {
         string firstName, lastName;
         cout << "Enter first name: ";
@@ -122,10 +118,9 @@ private:
         cout << "Enter last name: ";
         cin >> lastName;
         phoneBook.findPerson(lastName);
-        // cout << found.getFirstName() + " " + found.getLastName() + " - " + found.getPhoneName();
-
     }
 
+    // Function to change a selected person phone number
     void changePhoneNumber() {
         string firstName, lastName, phoneNumber;
         cout << "Enter first name: ";
@@ -137,6 +132,7 @@ private:
         phoneBook.changeNumber(lastName, phoneNumber);
     }
 
+    // Display phone book
     void displayPhoneBook() {
         phoneBook.displayPhoneBook();
     }
